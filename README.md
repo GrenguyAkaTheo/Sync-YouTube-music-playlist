@@ -10,4 +10,4 @@ You MUST edit the .sh file (The actual script) and follow the short and simple i
 Make sure the file is exicutable by your linux distro with `sudo chmod -x <path to file>/YT_playlist_sync.sh` in the terminal, or whatever command you use to make .sh files exicutable. Then simply run the file by opening it in your file explorer, or typing `bash <path to file>/YT_playlist_sync.sh` in your terminal
 
 
-Please don't use this script to distrabute the songs you download, I really don't want another ana's archive situation that makes youtube change their API's and break this script
+Please don't use this script to distrabute the songs you download, I really don't want another ana's archive situation that makes youtube change their API's like Spotify did and break this script
