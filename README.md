@@ -15,4 +15,6 @@ On that note, MAKE SURE THAT ANY SONGS YOU ALREADY HAVE DOWNLOADED ARE IN A DIFF
 DO NOT REMOVE "history.txt" WHEN YOU RUN THE SCRIPT. This is effectively a memory for this script, and it keeps the ID's of all the songs in your file. If you delete this file the whole playlist will be downloaded again rather than just the songs that need to be downloaded
 
 
+If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out
+
 Please don't use this script to distrabute the songs you download, I really don't want another ana's archive situation that makes youtube change their API's like Spotify did and break this script
