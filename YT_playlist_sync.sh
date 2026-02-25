@@ -8,7 +8,7 @@
 # For this script to work you must have yt-dlp, and mid3v2 installed!!!
 
 # Set music directory, YT playlist link, and a plalist name for all your songs here
-MUSIC_DIR="<Music folder directory here>"
+MUSIC_DIR="<Music folder path here>"
 PLAYLIST_URL="<YouTube or YouTube music playlist link here>"
 PLAYLIST_FILE="<Name of playlist for all songs in your music folder here (It will make one if you don't have a playlist file)>.m3u"
 
