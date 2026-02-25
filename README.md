@@ -12,5 +12,7 @@ DO NOT CHANGE THE ACTUAL FILE NAMES OF THE SONGS! This will cause the song to be
 
 On that note, MAKE SURE THAT ANY SONGS YOU ALREADY HAVE DOWNLOADED ARE IN A DIFFERENT FILE OR THEY WILL GET DELETED FOR THE SAME REASON!!
 
+DO NOT REMOVE "history.txt" WHEN YOU RUN THE SCRIPT. This is effectively a memory for this script, and it keeps the ID's of all the songs in your file. If you delete this file the whole playlist will be downloaded again rather than just the songs that need to be downloaded
+
 
 Please don't use this script to distrabute the songs you download, I really don't want another ana's archive situation that makes youtube change their API's like Spotify did and break this script
