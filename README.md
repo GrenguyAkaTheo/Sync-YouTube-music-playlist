@@ -17,4 +17,6 @@ DO NOT REMOVE "history.txt" WHEN YOU RUN THE SCRIPT. This is effectively a memor
 
 If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out
 
+I am aware that the log file doesn't really work properly, but you can get a date and time out of it and know if songs were removed or not
+
 Please don't use this script to distrabute the songs you download, I really don't want another ana's archive situation that makes youtube change their API's like Spotify did and break this script
