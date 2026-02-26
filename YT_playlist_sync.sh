@@ -1,5 +1,5 @@
-                                                                                                                                                                                                                                                                #!/bin/bash
-# Music sync script for Theo's Cyberdeck - Integrated Version
+                                                                                                                                                                                                                                                               #!/bin/bash
+#!/bin/bash
 
 
 
