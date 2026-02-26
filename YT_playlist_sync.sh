@@ -12,6 +12,7 @@ MUSIC_DIR="<Music folder path here>"
 PLAYLIST_URL="<YouTube or YouTube music playlist link here>"
 PLAYLIST_FILE="<Name of playlist for all songs in your music folder here (It will make one if you don't have a playlist file)>.m3u"
 
+## If you tun this script and it closes its self imediatly, restarting your device should sort that. It doesn't happen much, but on my raspberry pi 3B+ I had that issue a couple of times and restating it worked both times
 ## You'r all set to use the script now :D
 
 
@@ -37,6 +38,7 @@ export LANG=C.UTF-8
 cd "$MUSIC_DIR"
 
 echo "Music sync: Welcome"
+echo ""
 sleep 1
 
 
@@ -51,6 +53,8 @@ if [ "$AVAILABLE_MB" -lt 256 ]; then
     exit 1
 fi
 
+echo ""
+
 # --- WiFi Check Logic ---
 CONNECTED=false
 for i in {1..6}; do
@@ -62,6 +66,8 @@ for i in {1..6}; do
     sleep 5
 done
 
+echo ""
+
 if [ "$CONNECTED" = false ]; then
     echo "Music sync: No WiFi. Music sync will not procede."
     exit 1
@@ -69,6 +75,7 @@ fi
 
 if [ -d "$MUSIC_DIR" ]; then
     echo "Music sync: WiFi connected and checking for new music..."
+    echo ""
 
     BEFORE_COUNT=$(ls -1 *.mp3 2>/dev/null | wc -l)
 
@@ -84,47 +91,45 @@ if [ -d "$MUSIC_DIR" ]; then
     if [ -f "new_songs.tmp" ]; then
         echo -e "\nMusic sync: Tagging new songs..."
 
-        # Ensure playlist has the proper header
         if [ ! -f "$PLAYLIST_FILE" ] || ! head -n 1 "$PLAYLIST_FILE" | grep -q "#EXTM3U"; then
             echo "#EXTM3U" > "$PLAYLIST_FILE"
         fi
 
-        while read -r filename; do
+        # Open new_songs.tmp on File Descriptor 3
+        while read -r filename <&3; do
             if [ -f "$filename" ]; then
                 echo -e "\n--------------------------------------------------"
                 echo "NEW FILE: $filename"
-                # Use </dev/tty so 'read' doesn't try to read from the 'new_songs.tmp' file
-                read -p "DISPLAY NAME (Leave blank to use filename): " user_input </dev/tty
+
+                # Now 'read' can use standard stdin (keyboard) naturally
+                read -p "DISPLAY NAME (Leave blank to use filename): " user_input
 
                 if [ -z "$user_input" ]; then
-                    CLEAN_TITLE="${filename%.*}"
+                CLEAN_TITLE="${filename%.*}"
                 else
-                    CLEAN_TITLE="$user_input"
+                CLEAN_TITLE="$user_input"
                 fi
 
-                # Update the internal tags
-                mid3v2 --convert --v2.3 -t "$CLEAN_TITLE" -A "${filename%.*}" "$filename" >/dev/null 2>&1
+                # Using < /dev/null ensures mid3v2 doesn't look at stdin at all
+                mid3v2 --convert --v2.3 -t "$CLEAN_TITLE" -A "${filename%.*}" "$filename" >/dev/null 2>&1 < /dev/null
 
-                # Append to playlist if not already there
                 if ! grep -qFx "$filename" "$PLAYLIST_FILE"; then
                     printf "#EXTINF:-1,%s\n%s\n" "$CLEAN_TITLE" "$filename" >> "$PLAYLIST_FILE"
                 fi
 
                 echo " -> Saved and added to playlist as: $CLEAN_TITLE"
             fi
-        done  < new_songs.tmp
+        done 3< new_songs.tmp  # Connect FD 3 to the file
 
-    else
+        else
         echo "Music sync: No new songs downloaded, skipping tagging."
     fi
-
     # 2. Cleanup Audit & Active Deletion
+    REMOVED_COUNT=$1
     echo -e "\nMusic sync: Scanning for removed songs..."
     if yt-dlp --get-id --flat-playlist --no-warnings "$PLAYLIST_URL" > online_ids.txt; then
         REMOVED_COUNT=0
-        rm -f session_deletions.tmp
         grep "youtube " history.txt | awk '{print $2}' | tr -d '\r' > local_history_ids.txt
-
         while read -r id; do
             [ -z "$id" ] && continue
             if ! grep -qFx -- "$id" online_ids.txt; then
@@ -132,8 +137,8 @@ if [ -d "$MUSIC_DIR" ]; then
                 if [ -f "$EXPECTED_NAME" ]; then
                     rm "$EXPECTED_NAME"
                     echo "$(date +'%Y-%m-%d %H:%M') | ID: $id | File: $EXPECTED_NAME" >> session_deletions.tmp
+                    echo "File: $EXPECTED_NAME" >> Deleted_files.tmp
                     grep -v "$id" history.txt > history.tmp && mv history.tmp history.txt
-                    REMOVED_COUNT=$1
                     REMOVED_COUNT=$((REMOVED_COUNT + 1))
                 else
                     REAL_FILE=$(find . -maxdepth 1 -type f -name "*$id*.mp3" -print -quit)
@@ -148,6 +153,7 @@ if [ -d "$MUSIC_DIR" ]; then
         done < local_history_ids.txt
 
         [ -f session_deletions.tmp ] && cat session_deletions.tmp >> Deleted.txt
+        [ -f session_deletions.tmp ] && cat session_deletions.tmp > Session_deletions.txt
         rm -f online_ids.txt local_history_ids.txt
     fi
 
@@ -170,7 +176,6 @@ if [ -d "$MUSIC_DIR" ]; then
                 fi
             done
             rm old_list.tmp
-            rm new_songs.tmp 2>/dev/null
         fi
     fi
     # 3. Notification Logic
@@ -189,11 +194,18 @@ fi
 # Log output
 LOG_FILE="$MUSIC_DIR/sync_log.txt"
 {
-  echo "Sync Session: $(date) | Added: $ADDED | Deleted: $REMOVED_COUNT"
+  echo "Sync Session: $(date)"
+  echo "Added: $ADDED | Deleted: $REMOVED_COUNT"
+  echo ""
+  echo "Songs added;"
+  cat rm new_songs.tmp 2>/dev/null
+  echo ""
   echo "Songs deleted;"
-  echo $session_deletions.tmp
+  cat Deleted_files.tmp 2>/dev/null
   echo "-----------------------------------------------------------------"
 } >> "$LOG_FILE"
+
+rm Deleted_files.tmp 2>/dev/null
 
 echo ""
 read -p "Music sync complete. Press [Enter] to exit..."
