@@ -198,7 +198,7 @@ LOG_FILE="$MUSIC_DIR/sync_log.txt"
   echo "Added: $ADDED | Deleted: $REMOVED_COUNT"
   echo ""
   echo "Songs added;"
-  cat rm new_songs.tmp 2>/dev/null
+  cat new_songs.tmp 2>/dev/null
   echo ""
   echo "Songs deleted;"
   cat Deleted_files.tmp 2>/dev/null
