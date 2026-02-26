@@ -137,7 +137,7 @@ if [ -d "$MUSIC_DIR" ]; then
                 if [ -f "$EXPECTED_NAME" ]; then
                     rm "$EXPECTED_NAME"
                     echo "$(date +'%Y-%m-%d %H:%M') | ID: $id | File: $EXPECTED_NAME" >> session_deletions.tmp
-                    echo "File: $EXPECTED_NAME" >> Deleted_files.tmp
+                    echo "$EXPECTED_NAME" >> Deleted_files.tmp
                     grep -v "$id" history.txt > history.tmp && mv history.tmp history.txt
                     REMOVED_COUNT=$((REMOVED_COUNT + 1))
                 else
@@ -197,15 +197,16 @@ LOG_FILE="$MUSIC_DIR/sync_log.txt"
   echo "Sync Session: $(date)"
   echo "Added: $ADDED | Deleted: $REMOVED_COUNT"
   echo ""
-  echo "Songs added;"
+  echo "Songs added (Listed as file names);"
   cat new_songs.tmp 2>/dev/null
   echo ""
-  echo "Songs deleted;"
+  echo "Songs deleted (Listed as file names);"
   cat Deleted_files.tmp 2>/dev/null
   echo "-----------------------------------------------------------------"
 } >> "$LOG_FILE"
 
 rm Deleted_files.tmp 2>/dev/null
+rm new_songs.tmp 2>/dev/null
 
 echo ""
 read -p "Music sync complete. Press [Enter] to exit..."
