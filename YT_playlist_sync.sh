@@ -110,8 +110,8 @@ if [ -d "$MUSIC_DIR" ]; then
                 CLEAN_TITLE="$user_input"
                 fi
 
-                # Using < /dev/null ensures mid3v2 doesn't look at stdin at all
-                mid3v2 --convert --v2.3 -t "$CLEAN_TITLE" -A "${filename%.*}" "$filename" >/dev/null 2>&1 < /dev/null
+                # Write new title to metadata
+                mid3v2 -t "$CLEAN_TITLE" -A "${filename%.*}" "$filename"
 
                 if ! grep -qFx "$filename" "$PLAYLIST_FILE"; then
                     printf "#EXTINF:-1,%s\n%s\n" "$CLEAN_TITLE" "$filename" >> "$PLAYLIST_FILE"
