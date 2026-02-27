@@ -27,4 +27,4 @@ The album tag is what youtube gives the script to use. If the album gets set to 
 
 Please don't use this script to distrabute the songs you download, I really don't want another ana's archive situation that makes youtube change their API's like Spotify did and break this script
 
--GrenguyAkaTheo, GitHub
+ - GrenguyAkaTheo, GitHub
