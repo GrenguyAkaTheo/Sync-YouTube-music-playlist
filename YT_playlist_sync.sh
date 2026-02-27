@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                               #!/bin/bash
+#!/bin/bash
 #!/bin/bash
 
 
@@ -111,7 +111,7 @@ if [ -d "$MUSIC_DIR" ]; then
                 fi
 
                 # Write new title to metadata
-                mid3v2 -t "$CLEAN_TITLE" -A "${filename%.*}" "$filename"
+                mid3v2 -t "$CLEAN_TITLE" "$filename"
 
                 if ! grep -qFx "$filename" "$PLAYLIST_FILE"; then
                     printf "#EXTINF:-1,%s\n%s\n" "$CLEAN_TITLE" "$filename" >> "$PLAYLIST_FILE"
