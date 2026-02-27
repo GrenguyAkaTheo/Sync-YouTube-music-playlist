@@ -22,7 +22,7 @@ If your downloading songs with charicters from a different langwage (eg: Japanei
 `#EXTINF:-1,Ambassador` <-- display name/Title of song
 `了冫⧸ヽ″廾勺″ー (feat. 重音テト).mp3` <-- Actual file name
 
-If a song fails to download dew to something along the lines of "video unavalale" but you can get the song in some other way, simply rename the song file to the exact title of the song on youtube music. And then to stop the script from erroring enter "history.txt", and add `youtube <The songs youtube ID (will look something like this "otS3u8227kY&si")>` as a new line anywhere in the file. This ID can be found in the songs link (like this, at the quoted location after "watch?v=" https://music.youtube.com/watch?v=`otS3u8227kY&si`=MNSqvxaIQXurzefd) 
+If a song fails to download dew to something along the lines of "video unavalale" but you can get the song in some other way, simply rename the song file to the exact title of the song on youtube music. And then to stop the script from erroring enter "history.txt", and add `youtube <The songs youtube ID (will look something like this "otS3u8227kY")>` as a new line anywhere in the file. This ID can be found in the songs link (like this, at the quoted location after "watch?v=" https://music.youtube.com/watch?v=`otS3u8227kY`&si=MNSqvxaIQXurzefd) 
 
 The album tag is what youtube gives the script to use. If the album gets set to something like the song name (Or nothing at all) this is because of youtube, not the script its self :D
 
