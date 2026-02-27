@@ -19,6 +19,8 @@ If your downloading songs with charicters from a different langwage (eg: Japanei
 `#EXTINF:-1,Ambassador` <-- display name/Title of song
 `了冫⧸ヽ″廾勺″ー (feat. 重音テト).mp3` <-- Actual file name
 
+If a song fails to download dew to something along the lines of "video unavalale" but you can get the song in some other way, simply rename the song file to the exact title of the song on youtube music. And then to stop the script from erroring enter "history.txt", and add `youtube <The songs youtube ID (wil look something like this "LN9GxpAQmJA")>` as a new line anywhere in the file
+
 If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out
 
 The album tag is what youtube gives the script to use. If the album gets set to something like the song name (or not set at all) this is because of youtube, not the script its self :D
