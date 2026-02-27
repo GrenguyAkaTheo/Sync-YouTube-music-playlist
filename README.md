@@ -12,8 +12,12 @@ DO NOT CHANGE THE ACTUAL FILE NAMES OF THE SONGS! This will cause the song to be
 
 On that note, MAKE SURE THAT ANY SONGS YOU ALREADY HAVE DOWNLOADED ARE IN A DIFFERENT FILE OR THEY WILL GET DELETED FOR THE SAME REASON!!
 
-DO NOT REMOVE "history.txt" WHEN YOU RUN THE SCRIPT. This is effectively a memory for this script, and it keeps the ID's of all the songs in your file. If you delete this file the whole playlist will be downloaded again rather than just the songs that need to be downloaded
+DO NOT REMOVE "history.txt" ONCE YOU RUN THE SCRIPT. This is effectively a memory for this script, and it keeps the ID's of all the songs in your file. If you delete this file the whole playlist will be downloaded again rather than just the songs that need to be downloaded
 
+
+If your downloading songs with charicters from a different langwage (eg: Japaneise) it may skip title metadata. I have experianced this, about 5 of the 20 songs I downloaded with Japaneise titles did have this issue. The file does get downloaded, but you may have to manually add it to the playlist file. If you do have to do this, it should be formated as followed (I'm using a file I downloaded with this issue as an example);
+#EXTINF:-1,Ambassador <-- display name/Title of song
+了冫⧸ヽ″廾勺″ー (feat. 重音テト).mp3 <-- Actual file name
 
 If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out
 
