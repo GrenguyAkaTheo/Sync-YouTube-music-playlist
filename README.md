@@ -16,8 +16,8 @@ DO NOT REMOVE "history.txt" ONCE YOU RUN THE SCRIPT. This is effectively a memor
 
 
 If your downloading songs with charicters from a different langwage (eg: Japaneise) it may skip title metadata. I have experianced this, about 5 of the 20 songs I downloaded with Japaneise titles did have this issue. The file does get downloaded, but you may have to manually add it to the playlist file. If you do have to do this, it should be formated as followed (I'm using a file I downloaded with this issue as an example);
-#EXTINF:-1,Ambassador <-- display name/Title of song
-了冫⧸ヽ″廾勺″ー (feat. 重音テト).mp3 <-- Actual file name
+`#EXTINF:-1,Ambassador` <-- display name/Title of song
+`了冫⧸ヽ″廾勺″ー (feat. 重音テト).mp3` <-- Actual file name
 
 If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out
 
