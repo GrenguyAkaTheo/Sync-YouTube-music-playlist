@@ -82,6 +82,7 @@ if [ -d "$MUSIC_DIR" ]; then
     # 1. Run the download (New songs)
     yt-dlp -x --audio-format mp3 --audio-quality 0 \
     --embed-thumbnail --embed-metadata --write-subs --embed-subs \
+    --parse-metadata "track_number:%(meta_track)s" \
     --no-part --no-warnings -i --ignore-errors --no-cache-dir \
     --download-archive history.txt -o "%(title)s.%(ext)s" \
     --exec 'echo "%(title)s.mp3" >> new_songs.tmp' \
