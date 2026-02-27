@@ -46,7 +46,7 @@ sleep 1
 # Storage space check
 AVAILABLE_KB=$(df . --output=avail | tail -1)
 AVAILABLE_MB=$((AVAILABLE_KB / 1024))
-echo "Storage Check: $AVAILABLE_MB MB remaining on USB."
+echo "Storage Check: $AVAILABLE_MB MB remaining on storage drive."
 
 if [ "$AVAILABLE_MB" -lt 256 ]; then
     echo "Music sync: LOW DISK SPACE ($AVAILABLE_MB MB). Sync cancelled."
