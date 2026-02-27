@@ -3,6 +3,8 @@ This is a relitivly simple bash scrip that uses yt-dlp to download a youtube mus
 
 If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out
 
+MAKE SURE THE PLAYLIST YOUR DOWNLOADING IS SET TO PUBLIC ON YOUTUBE
+
 
 For this script to work you must have yt-dlp, and mid3v2 installed or it won't be able to download anything off of youtube, or properly embed metadata for some audio players (Like lollypop)
 
