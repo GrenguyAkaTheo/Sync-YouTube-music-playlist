@@ -1,4 +1,4 @@
-#!/bin/bash
+                                                                                                                                                                                                                                                               #!/bin/bash
 #!/bin/bash
 
 
@@ -8,9 +8,9 @@
 # For this script to work you must have yt-dlp, and mid3v2 installed!!!
 
 # Set music directory, YT playlist link, and a plalist name for all your songs here
-MUSIC_DIR="<Music folder path here>"
-PLAYLIST_URL="<YouTube or YouTube music playlist link here>"
-PLAYLIST_FILE="<Name of playlist for all songs in your music folder here (It will make one if you don't have a playlist file)>.m3u"
+MUSIC_DIR="/run/media/Theo/MSI USB/Music"
+PLAYLIST_URL="https://music.youtube.com/playlist?list=PLDa2t4jsWyNytVVmb7R1GBuC8RKN7vgbn&si=1IyTr-7t6CHb6cfE"
+PLAYLIST_FILE="All_music.m3u"
 
 ## If you tun this script and it closes its self imediatly, restarting your device should sort that. It doesn't happen much, but on my raspberry pi 3B+ I had that issue a couple of times and restating it worked both times
 ## You'r all set to use the script now :D
@@ -46,7 +46,7 @@ sleep 1
 # Storage space check
 AVAILABLE_KB=$(df . --output=avail | tail -1)
 AVAILABLE_MB=$((AVAILABLE_KB / 1024))
-echo "Storage Check: $AVAILABLE_MB MB remaining on selected drive."
+echo "Storage Check: $AVAILABLE_MB MB remaining on USB."
 
 if [ "$AVAILABLE_MB" -lt 256 ]; then
     echo "Music sync: LOW DISK SPACE ($AVAILABLE_MB MB). Sync cancelled."
@@ -81,7 +81,9 @@ if [ -d "$MUSIC_DIR" ]; then
 
     # 1. Run the download (New songs)
     yt-dlp -x --audio-format mp3 --audio-quality 0 \
-    --embed-thumbnail --embed-metadata --write-subs --embed-subs \
+    --embed-thumbnail --embed-metadata \
+    --sub-langs "en.*,ja.*,.*-orig,all" \
+    --convert-subs lrc --postprocessor-args "ffmpeg:-id3v2_version 3" \
     --parse-metadata "track_number:%(meta_track)s" \
     --no-part --no-warnings -i --ignore-errors --no-cache-dir \
     --download-archive history.txt -o "%(title)s.%(ext)s" \
@@ -122,33 +124,42 @@ if [ -d "$MUSIC_DIR" ]; then
             fi
         done 3< new_songs.tmp  # Connect FD 3 to the file
 
-        else
+    else
         echo "Music sync: No new songs downloaded, skipping tagging."
     fi
     # 2. Cleanup Audit & Active Deletion
-    REMOVED_COUNT=$1
     echo -e "\nMusic sync: Scanning for removed songs..."
+
+    # Get current IDs from YouTube
     if yt-dlp --get-id --flat-playlist --no-warnings "$PLAYLIST_URL" > online_ids.txt; then
         REMOVED_COUNT=0
+
+        # Extract IDs from history.txt (assumes format: "youtube [ID]")
         grep "youtube " history.txt | awk '{print $2}' | tr -d '\r' > local_history_ids.txt
+
         while read -r id; do
             [ -z "$id" ] && continue
+
+            # If the ID in our history is NOT in the online list
             if ! grep -qFx -- "$id" online_ids.txt; then
-                EXPECTED_NAME=$(yt-dlp --get-filename -o "%(title)s.mp3" -- "$id" 2>/dev/null)
-                if [ -f "$EXPECTED_NAME" ]; then
-                    rm "$EXPECTED_NAME"
-                    echo "$(date +'%Y-%m-%d %H:%M') | ID: $id | File: $EXPECTED_NAME" >> session_deletions.tmp
-                    echo "$EXPECTED_NAME" >> Deleted_files.tmp
+
+                # Find the file. Since tags change, searching for the ID in the filename is safest
+                REAL_FILE=$(find . -maxdepth 1 -type f -name "*$id*" -print -quit)
+
+                if [ -n "$REAL_FILE" ]; then
+                    FILE_NAME=$(basename "$REAL_FILE")
+                    rm "$REAL_FILE"
+
+                    # Update logs
+                    echo "$(date +'%Y-%m-%d %H:%M') | ID: $id | File: $FILE_NAME" >> session_deletions.tmp
+                    echo "$FILE_NAME" >> Deleted_files.tmp
+
+                    # THE FIX: Remove the ID from history.txt immediately
+                    # We use a temp file to avoid corrupting history.txt while reading it
                     grep -v "$id" history.txt > history.tmp && mv history.tmp history.txt
+
                     REMOVED_COUNT=$((REMOVED_COUNT + 1))
-                else
-                    REAL_FILE=$(find . -maxdepth 1 -type f -name "*$id*.mp3" -print -quit)
-                    if [ -n "$REAL_FILE" ]; then
-                        rm "$REAL_FILE"
-                        echo "$(date +'%Y-%m-%d %H:%M') | ID: $id | File: $(basename "$REAL_FILE")" >> session_deletions.tmp
-                        grep -v "$id" history.txt > history.tmp && mv history.tmp history.txt
-                        REMOVED_COUNT=$((REMOVED_COUNT + 1))
-                    fi
+                    echo " -> Removed from local storage: $FILE_NAME"
                 fi
             fi
         done < local_history_ids.txt
