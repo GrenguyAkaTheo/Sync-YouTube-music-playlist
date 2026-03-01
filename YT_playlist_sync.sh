@@ -105,7 +105,7 @@ if [ -d "$MUSIC_DIR" ]; then
         echo -e "\nMusic sync: Tagging new songs..."
         while IFS='|' read -r id filename; do
             if [ -f "$filename" ]; then
-                echo -e "\n--------------------------------------------------"
+                echo -e "\n-----------------------------------------------------------------"
                 echo "NEW FILE: $filename"
                 read -p "DISPLAY NAME (Leave blank to use filename): " user_input </dev/tty
                 if [ -z "$user_input" ]; then
