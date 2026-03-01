@@ -1,7 +1,5 @@
 ANY KNOWN ISSUES WILL BE LISTED UNDER THIS LINE;
 
-Some songs don't get added prpperly for some reason. Not super sure why, but I am trying to fix this
-
 
 # Sync-YouTube-music-playlist
 This is a relitivly simple bash scrip that uses yt-dlp to download a youtube music playlist and automatically add the thumbnail, lyrics, album, and artists to the metadata of all the songs on the playlist. It will also automaticaly delete songs from your music directory if you remove them from your youtube music playlist
