@@ -16,6 +16,7 @@ PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
 ## You'r all set to use the script now :D
 
 
+
 # --- AUTO-TERMINAL BOX ---
 if [ ! -t 0 ]; then
     lxterminal -t "Music Sync" -e "$0"
@@ -101,13 +102,12 @@ if [ -d "$MUSIC_DIR" ]; then
     REMOVED_COUNT=0
 
     if [ -f "new_songs.tmp" ]; then
-        cat new_songs.tmp >> id_filename_map.txt
         echo -e "\nMusic sync: Tagging new songs..."
-        while IFS='|' read -r id filename; do
+        while IFS='|' read -r id filename <&3; do
             if [ -f "$filename" ]; then
                 echo -e "\n-----------------------------------------------------------------"
                 echo "NEW FILE: $filename"
-                read -p "DISPLAY NAME (Leave blank to use filename): " user_input </dev/tty
+                read -p "DISPLAY NAME (Leave blank to use filename): " user_input
                 if [ -z "$user_input" ]; then
                     CLEAN_TITLE="${filename%.*}"
                 else
@@ -115,9 +115,9 @@ if [ -d "$MUSIC_DIR" ]; then
                 fi
                 mid3v2 -t "$CLEAN_TITLE" "$filename"
                 echo " -> Saved title tag as: $CLEAN_TITLE"
-
+                echo "$id|$filename" >> id_filename_map.txt
             fi
-        done < new_songs.tmp
+        done 3< new_songs.tmp
     else
         echo "Music sync: No new songs downloaded, skipping tagging."
         echo ""
@@ -138,6 +138,7 @@ if [ -d "$MUSIC_DIR" ]; then
                 [ -z "$id" ] && continue
                 if ! grep -qFx -- "$id" online_ids.txt; then
                     if [ -f "$filename" ]; then
+                        echo ""
                         echo " -> Deleting removed song: $filename"
                         rm "$filename"
                         grep -v "^$id|" id_filename_map.txt > id_map.tmp && mv id_map.tmp id_filename_map.txt
@@ -188,10 +189,10 @@ LOG_FILE="$MUSIC_DIR/sync_log.txt"
   echo "Sync Session: $(date)"
   echo "Added: $ADDED | Deleted: $REMOVED_COUNT"
   echo ""
-  echo "Songs added (Listed as file names);"
+  echo "Songs added (YouTube ID|File name);"
   cat new_songs.tmp 2>/dev/null
   echo ""
-  echo "Songs deleted (Listed as file names);"
+  echo "Songs deleted (File name);"
   cat Deleted_files.tmp 2>/dev/null
   echo "-----------------------------------------------------------------"
 } >> "$LOG_FILE"
