@@ -27,7 +27,7 @@ If a song fails to download dew to something along the lines of "video unavalale
 
 This tags songs with ID3v2.3 rather than ID3v2.4. This is for better compatibility with older media players like VLC and audatious. You can change this in the yt-dlp download command within the script by changing line 93 to say  `"ffmpeg:-id3v2_version 4"` rather than `"ffmpeg:-id3v2_version 3"`
 
-If a song you downloaded has charictors like a /, you will likely have to remove these from id_filename_map.txt and your music folder manualy. This is because your device will think that its looking for a diferent folder all together, and fail to find the song to delete
+If a song you downloaded a song with charictors like a /, you will likely have to remove these from id_filename_map.txt and your music folder manualy if you remove it from your YouTube music playlist. This is because your device will think that its looking for a diferent folder all together, and fail to find the song to delete
 
 The album tag is what youtube gives the script to use. If the album gets set to something like the song name (Or nothing at all) this is because of youtube, not the script its self :D
 
