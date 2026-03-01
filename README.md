@@ -1,5 +1,5 @@
 THERE IS A SLIGHT ISSUE;
-Deleting songs doesn't really work properly right now, and you kinda need to remove the ID's and file from your drive manually. I am working to fix this though, so if you do want a working version, come back in a week or so and it'll probably be fixed
+Deleting songs doesn't really work properly right now, and you kinda need to remove the ID's and file from your drive manually. I am working to fix this though, so if you do want a working version, come back in a week or so and it'll probably be fixed (once this warning is removed from the read me it means that I have sorted it out)
 
 # Sync-YouTube-music-playlist
 This is a relitivly simple bash scrip that uses yt-dlp to download a youtube music playlist and automatically the thumbnail, lyrics, and artists to the metadata of all the songs on the playlist. It will also automaticaly delete songs from your music directory if you remove them from your youtube music playlist
