@@ -1,5 +1,5 @@
-THERE IS A SLIGHT ISSUE;
-Deleting songs doesn't really work properly right now, and you kinda need to remove the ID's and file from your drive manually. I am working to fix this though, so if you do want a working version, come back in a week or so and it'll probably be fixed (once this warning is removed from the read me it means that I have sorted it out)
+ANY KNOWN ISSUES WILL BE LISTED UNDER THIS LINE;
+
 
 # Sync-YouTube-music-playlist
 This is a relitivly simple bash scrip that uses yt-dlp to download a youtube music playlist and automatically add the thumbnail, lyrics, album, and artists to the metadata of all the songs on the playlist. It will also automaticaly delete songs from your music directory if you remove them from your youtube music playlist
@@ -21,13 +21,11 @@ On that note, MAKE SURE THAT ANY SONGS YOU ALREADY HAVE DOWNLOADED ARE IN A DIFF
 
 DO NOT REMOVE "history.txt" ONCE YOU RUN THE SCRIPT. This is effectively a memory for this script, and it keeps the ID's of all the songs in your file. If you delete this file the whole playlist will be downloaded again rather than just the songs that need to be downloaded
 
-If your downloading songs with charicters from a different langwage (eg: Japaneise) it may skip title metadata. I have experianced this, about 5 of the 20 songs I downloaded with Japaneise titles did have this issue. The file does get downloaded, but you may have to manually add it to the playlist file. If you do have to do this, it should be formated as followed (I'm using a file I downloaded with this issue as an example);
-`#EXTINF:-1,Ambassador` <-- display name/Title of song
-`了冫⧸ヽ″廾勺″ー (feat. 重音テト).mp3` <-- Actual file name
+All the mp3 files in your music folder will be added to the playlist of all songs. If a song doesn't get added (which is highly unlikely) simply add the file name to a new line in your m3u file
 
 If a song fails to download dew to something along the lines of "video unavalale" but you can get the song in some other way, simply rename the song file to the exact title of the song on youtube music. And then to stop the script from erroring enter "history.txt", and add `youtube <The songs youtube ID (will look something like this "otS3u8227kY")>` as a new line anywhere in the file. This ID can be found in the songs link (like this, at the quoted location after "watch?v=" https://music.youtube.com/watch?v=`otS3u8227kY`&si=MNSqvxaIQXurzefd) 
 
-This tags songs with ID3v2.3 rather than ID3v2.4. This is for better compatibility with older media players like VLC and audatious. You can change this in the yt-dlp download command within the script by changing line 86 to say  `"ffmpeg:-id3v2_version 4"` rather than `"ffmpeg:-id3v2_version 3"`
+This tags songs with ID3v2.3 rather than ID3v2.4. This is for better compatibility with older media players like VLC and audatious. You can change this in the yt-dlp download command within the script by changing line 87 to say  `"ffmpeg:-id3v2_version 4"` rather than `"ffmpeg:-id3v2_version 3"`
 
 The album tag is what youtube gives the script to use. If the album gets set to something like the song name (Or nothing at all) this is because of youtube, not the script its self :D
 
