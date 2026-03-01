@@ -120,6 +120,7 @@ if [ -d "$MUSIC_DIR" ]; then
         done < new_songs.tmp
     else
         echo "Music sync: No new songs downloaded, skipping tagging."
+        echo ""
     fi
 
 
@@ -162,6 +163,7 @@ if [ -d "$MUSIC_DIR" ]; then
 
     # Playlist update if songs were added or removed
     if [[ $ADDED -gt 0 || $REMOVED_COUNT -gt 0 ]]; then
+        echo ""
         echo "Music sync: Songs were added or removed, updating playlist"
         ls -1 *.mp3 | grep -v "^\." > "$PLAYLIST_FILE"
     fi
