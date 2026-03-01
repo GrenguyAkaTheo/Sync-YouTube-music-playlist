@@ -5,12 +5,13 @@
 
 ## !!!!!!!READ HERE!!!!!!!!
 ## ---- DEPENDANCYS ----
-# For this script to work you must have yt-dlp, and mid3v2 installed!!!
+# For this script to work you must have yt-dlp, ffmpeg, and mid3v2 installed!!!
+# Please read the whole READ ME file before running this script, there is some important information in there
 
 # Set music directory, YT playlist link, and a plalist name for all your songs here
-MUSIC_DIR="/run/media/Theo/MSI USB/Music"
-PLAYLIST_URL="https://music.youtube.com/playlist?list=PLDa2t4jsWyNytVVmb7R1GBuC8RKN7vgbn&si=1IyTr-7t6CHb6cfE"
-PLAYLIST_FILE="All_music.m3u"
+MUSIC_DIR="<Path to your music folder>"
+PLAYLIST_URL="<Your YouTube playlist's link (make sure the playlist is set to public)>"
+PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
 
 ## If you tun this script and it closes its self imediatly, restarting your device should sort that. It doesn't happen much, but on my raspberry pi 3B+ I had that issue a couple of times and restating it worked both times
 ## You'r all set to use the script now :D
@@ -94,10 +95,6 @@ if [ -d "$MUSIC_DIR" ]; then
     if [ -f "new_songs.tmp" ]; then
         echo -e "\nMusic sync: Tagging new songs..."
 
-        if [ ! -f "$PLAYLIST_FILE" ] || ! head -n 1 "$PLAYLIST_FILE" | grep -q "#EXTM3U"; then
-            echo "#EXTM3U" > "$PLAYLIST_FILE"
-        fi
-
         # Open new_songs.tmp on File Descriptor 3
         while read -r filename <&3; do
             if [ -f "$filename" ]; then
@@ -108,89 +105,89 @@ if [ -d "$MUSIC_DIR" ]; then
                 read -p "DISPLAY NAME (Leave blank to use filename): " user_input
 
                 if [ -z "$user_input" ]; then
-                CLEAN_TITLE="${filename%.*}"
+                    CLEAN_TITLE="${filename%.*}"
                 else
-                CLEAN_TITLE="$user_input"
+                    CLEAN_TITLE="$user_input"
                 fi
 
                 # Write new title to metadata
                 mid3v2 -t "$CLEAN_TITLE" "$filename"
 
-                if ! grep -qFx "$filename" "$PLAYLIST_FILE"; then
-                    printf "#EXTINF:-1,%s\n%s\n" "$CLEAN_TITLE" "$filename" >> "$PLAYLIST_FILE"
-                fi
-
-                echo " -> Saved and added to playlist as: $CLEAN_TITLE"
+                echo " -> Saved title tag as: $CLEAN_TITLE"
             fi
         done 3< new_songs.tmp  # Connect FD 3 to the file
 
     else
         echo "Music sync: No new songs downloaded, skipping tagging."
     fi
-    # 2. Cleanup Audit & Active Deletion
+
+    # 2. Cleanup Audit & Active Deletion (Name + ID Purge)
     echo -e "\nMusic sync: Scanning for removed songs..."
 
-    # Get current IDs from YouTube
+    # 1. Get a list of all current Titles from the YouTube Playlist
     if yt-dlp --get-id --flat-playlist --no-warnings "$PLAYLIST_URL" > online_ids.txt; then
+        yt-dlp --get-filename -o "%(title)s" --flat-playlist --no-warnings "$PLAYLIST_URL" > online_titles.txt
         REMOVED_COUNT=0
 
-        # Extract IDs from history.txt (assumes format: "youtube [ID]")
-        grep "youtube " history.txt | awk '{print $2}' | tr -d '\r' > local_history_ids.txt
+        grep "youtube" history.txt | awk '{print $2}' | tr -d '\r' > local_history_ids.txt
 
         while read -r id; do
             [ -z "$id" ] && continue
 
-            # If the ID in our history is NOT in the online list
             if ! grep -qFx -- "$id" online_ids.txt; then
-
-                # Find the file. Since tags change, searching for the ID in the filename is safest
-                REAL_FILE=$(find . -maxdepth 1 -type f -name "*$id*" -print -quit)
-
-                if [ -n "$REAL_FILE" ]; then
-                    FILE_NAME=$(basename "$REAL_FILE")
-                    rm "$REAL_FILE"
-
-                    # Update logs
-                    echo "$(date +'%Y-%m-%d %H:%M') | ID: $id | File: $FILE_NAME" >> session_deletions.tmp
-                    echo "$FILE_NAME" >> Deleted_files.tmp
-
-                    # THE FIX: Remove the ID from history.txt immediately
-                    # We use a temp file to avoid corrupting history.txt while reading it
-                    grep -v "$id" history.txt > history.tmp && mv history.tmp history.txt
-
-                    REMOVED_COUNT=$((REMOVED_COUNT + 1))
-                    echo " -> Removed from local storage: $FILE_NAME"
-                fi
+                sed -i "/$id/d" history.txt
             fi
         done < local_history_ids.txt
 
-        [ -f session_deletions.tmp ] && cat session_deletions.tmp >> Deleted.txt
-        [ -f session_deletions.tmp ] && cat session_deletions.tmp > Session_deletions.txt
-        rm -f online_ids.txt local_history_ids.txt
+        # Build a title->ID map from the live playlist
+        yt-dlp --flat-playlist --no-warnings \
+            --print "%(id)s %(title)s" \
+            "$PLAYLIST_URL" > online_title_id_map.txt
+
+        for local_file in *.mp3; do
+            [ -e "$local_file" ] || continue
+            base_name="${local_file%.*}"
+
+            if ! grep -qF " $base_name" online_title_id_map.txt; then
+                echo " -> Deleting removed song: $local_file"
+
+                # Find the matching ID from the map
+                MATCHING_ID=$(grep -F " $base_name" online_title_id_map.txt | awk '{print $1}' | head -n 1)
+
+                # Fallback: search history.txt by any partial name match
+                if [ -z "$MATCHING_ID" ]; then
+                    MATCHING_ID=$(grep -F "$base_name" history.txt | awk '{print $2}' | head -n 1)
+                fi
+
+                rm "$local_file"
+
+                if [ -n "$MATCHING_ID" ]; then
+                    grep -v "$MATCHING_ID" history.txt > history.tmp && mv history.tmp history.txt
+                    echo " -> Purged ID $MATCHING_ID from history."
+                else
+                    echo " -> WARNING: Could not find ID for $base_name, manual history.txt cleanup may be needed."
+                fi
+
+                echo "$local_file" >> Deleted_files.tmp
+                REMOVED_COUNT=$((REMOVED_COUNT + 1))
+            fi
+        done
+
+        rm -f online_title_id_map.txt online_titles.txt
+
+    else
+        echo "Music sync: Could not reach YouTube to verify playlist names."
     fi
 
     AFTER_COUNT=$(ls -1 *.mp3 2>/dev/null | wc -l)
     ADDED=$((AFTER_COUNT - BEFORE_COUNT))
 
-    # --- SMART PLAYLIST CLEANUP ---
-    # Rebuilds the playlist by reading metadata/path pairs and checking file existence
-    if [[ -f "new_songs.tmp" || $REMOVED_COUNT -gt 0 ]]; then
-        if [ -f "$PLAYLIST_FILE" ]; then
-            echo "Music sync: Updating playlist entries..."
-            mv "$PLAYLIST_FILE" "old_list.tmp"
-            echo "#EXTM3U" > "$PLAYLIST_FILE"
-            # Skip the header, then read line1 (#EXTINF) and line2 (path)
-            grep -v "^#EXTM3U" "old_list.tmp" | while read -r line1; do
-                read -r line2
-                if [ -f "$line2" ]; then
-                    echo "$line1" >> "$PLAYLIST_FILE"
-                    echo "$line2" >> "$PLAYLIST_FILE"
-                fi
-            done
-            rm old_list.tmp
-        fi
+    # Playlist update if songs were added or removed
+    if [[ $ADDED -gt 0 || $REMOVED_COUNT -gt 0 ]]; then
+        ls -1 *.mp3 | grep -v "^\." > "$PLAYLIST_FILE"
     fi
-    # 3. Notification Logic
+
+    # 3. Logging Logic
     # makes sure negaives aren't shown in the notifacation as that can happen if songs are deleted otherwise lol
     if [ $ADDED -lt 0 ]; then
         ADDED=0
