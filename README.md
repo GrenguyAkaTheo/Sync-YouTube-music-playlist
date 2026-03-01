@@ -1,5 +1,7 @@
 ANY KNOWN ISSUES WILL BE LISTED UNDER THIS LINE;
 
+If the script fails to ask you for a custom title name, this is likely an issue with non-english charictors being in the file name, causing the script to have a bit of a hissy fit. It wil still get added to the playlist file, but you will have to tag it manually. You can do this very easily with apps like EasyTAG (Avalable for free on flathub). I'm not quite sure how to sort this, but it is a very un-common acourance
+
 
 # Sync-YouTube-music-playlist
 This is a relitivly simple bash scrip that uses yt-dlp to download a youtube music playlist and automatically add the thumbnail, lyrics, album, and artists to the metadata of all the songs on the playlist. It will also automaticaly delete songs from your music directory if you remove them from your youtube music playlist
