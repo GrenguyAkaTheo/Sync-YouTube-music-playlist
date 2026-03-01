@@ -32,6 +32,6 @@ This tags songs with ID3v2.3 rather than ID3v2.4. This is for better compatibili
 The album tag is what youtube gives the script to use. If the album gets set to something like the song name (Or nothing at all) this is because of youtube, not the script its self :D
 
 
-Please don't use this script to distrabute the songs you download, I really don't want another ana's archive situation that makes youtube change their API's like Spotify did and break this script
+PLEASE DO NOT USE THIS SCRIPT TO DISTROBUTE ANY MEDIA YOU DOWNLOAD!!!
 
 - GrenguyAkaTheo, GitHub
