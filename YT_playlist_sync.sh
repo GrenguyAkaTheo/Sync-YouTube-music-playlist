@@ -39,9 +39,9 @@ export LANG=C.UTF-8
 cd "$MUSIC_DIR"
 
 echo "Music sync: Welcome"
+echo "Do not distrobute anything you have obtained via this script!"
 echo ""
 sleep 1
-
 
 
 # Storage space check
