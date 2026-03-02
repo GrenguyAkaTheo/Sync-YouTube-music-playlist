@@ -42,7 +42,7 @@ PLEASE DO NOT USE THIS SCRIPT TO DISTROBUTE ANY MEDIA YOU DOWNLOAD!!!
 
 ---- Anything under this line is only relivent to the mobile version ----
 
-If you are running this on your phone you do need terminal access. I recommend you use Fdroid-Termix for this (but any bash terminal *should* do)
+If you are running this on your phone you do need terminal access. I recommend you use Fdroid-Termix for this (but any bash terminal *should* do). I do not know if this works on Apple, but it theoretically should as iOS is also Linux based, but you will need some other way to get a terminal as Termix is an Fdroid application (And is only available on Android)
 
 The same dependacies apply to the mobile version as the normal version. The script is EXACTLY the same, but I have commented out the storage check and lock file lines with '##' rather than '#' so you can easily find them lines and run this version of the script on a PC (Although you can run it on PC without incomenting these lines)
 
