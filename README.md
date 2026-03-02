@@ -5,7 +5,7 @@ Yeah so uhh, the lyrics just like, don't download. Not sure exactly *why*, but I
 # Sync-YouTube-music-playlist
 This is a relitivly simple bash scrip that uses yt-dlp to download a youtube music playlist and automatically add the thumbnail, lyrics, album, and artists to the metadata of all the songs on the playlist. It will also automaticaly delete songs from your music directory if you remove them from your youtube music playlist
 
-If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out
+If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out. I do know that Visual Studio Code has a Shell extention called "Shell". This should allow the script to run, but you will need to find a way to install the dependancys
 
 MAKE SURE THE PLAYLIST YOUR DOWNLOADING IS SET TO PUBLIC ON YOUTUBE
 
