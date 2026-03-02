@@ -10,7 +10,7 @@ If your on Windows, this may not work as you need bash suppourt. If you get bash
 MAKE SURE THE PLAYLIST YOUR DOWNLOADING IS SET TO PUBLIC ON YOUTUBE
 
 
-For this script to work you must have yt-dlp, ffmpeg, and mid3v2 installed or it won't be able to download anything off of youtube, or embed some of the metadata (which will cause the script to crash as it wont know what tf some of the commands are trying to say)
+For this script to work you must have yt-dlp, ffmpeg, and mid3v2 installed or it won't be able to download anything off of youtube, or embed some of the metadata (which will cause the script to crash as it wont know what tf some of the commands are trying to say). To install yt-dlp run 'sudo apt install yt-dlp', this should also imstall ffmpeg automatically (if not, you can run 'sudo apt install ffmpeg'). To install mid3v2 you must imstall it along side mutagen with pip (or uv tool if you have it), this can be done with 'pip install mutagen' (or 'uv tool install mutagen' if you have uv tool) (I recommend you install this after yt-dlp, as yt-dlp will install pip automatically so you wont have to install it yourself if you dont already have it)
 
 You MUST edit the .sh file (The actual script) and follow the short and simple instructions from line 5 to line 16, or it will crap the bed when you try to run it
 
