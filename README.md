@@ -48,6 +48,8 @@ The same dependacies apply to the mobile version as the normal version. The scri
 
 If you are using Termix sudo won't work, however you don't need sudo. simply run the same commands to install the dependencies but without 'sudo'
 
+The set up is exactly the same as the normal version of the script. Please read through the part of the READ ME for the normal version of the script to set it up, as once again, it's exactly the same script but with a few lines commented out
+
 You will likely have an issue or two while installing these. I won't know exactly what issues you may have, so I won't list the fixes here (If you read what I said for the rest of the mobile, it should work regardless). They are very easy to find fixes for on Google if you just take a screenshot of Termix, and send it to Gemini (Shut up about AI, this is one of the moments where it's actually useful for once) and say with the image "I have had this error on Termix. How can I fix it" (or something similar, this is just a prompt I'm providing that should give you a decent answer). If you run AI's fix and you get a different error, simply go through the same prosses again with the same prompt
 
 
