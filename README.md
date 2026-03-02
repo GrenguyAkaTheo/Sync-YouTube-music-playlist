@@ -32,6 +32,8 @@ If you downloaded s song with charictors like a /, you will likely have to remov
 
 The album tag is what youtube gives the script to use. If the album gets set to something like the song name (Or nothing at all) this is because of youtube, not the script its self :D. One way to solve this is to add the version of the song you want from the album rather than its music video as the music videos often dont contain the album there from
 
+I recomend you format your drives partition to something like BTRFS as this is caps sensitive. Any form of FAT formatting and NTFS are not caps sensitive, which can rarely cause issues.
+
 
 PLEASE DO NOT USE THIS SCRIPT TO DISTROBUTE ANY MEDIA YOU DOWNLOAD!!!
 
