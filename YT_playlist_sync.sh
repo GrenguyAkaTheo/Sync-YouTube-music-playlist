@@ -17,13 +17,15 @@ PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
 
 
 
-# --- AUTO-TERMINAL BOX ---
+# --- Makes the script run in a terminal if you don't launch it via the terminal ---
 if [ ! -t 0 ]; then
     lxterminal -t "Music Sync" -e "$0"
     exit
 fi
+# -----------------------------------------------------------------------------------
 
-# Prevent multiple instances
+
+# Prevent multiple instances of the script running at once
 LOCKFILE="${TMPDIR:-/data/local/tmp}/music_sync.lock"
 if [ -e "$LOCKFILE" ]; then
     echo "Sync already in progress. Exiting."
@@ -33,16 +35,16 @@ touch "$LOCKFILE"
 trap "rm -f '$LOCKFILE' *.tmp online_ids.txt local_history_ids.txt; exit" INT TERM EXIT
 
 
-# Force UTF-8 for Japanese/special characters
+# Force UTF-8 for special characters
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
+
 
 cd "$MUSIC_DIR"
 
 echo "Music sync: Welcome"
 echo "Do not distrobute anything you have obtained via this script!"
 echo ""
-sleep 1
 
 
 # Storage space check
@@ -56,7 +58,7 @@ fi
 
 echo ""
 
-# --- WiFi Check Logic ---
+# Check for WiFi connection by pinging Google, cos uhh, Google is basicaly always up
 CONNECTED=false
 for i in {1..6}; do
     if ping -q -c 1 -W 1 8.8.8.8 >/dev/null 2>&1; then
@@ -78,31 +80,40 @@ if [ -d "$MUSIC_DIR" ]; then
     echo "Music sync: WiFi connected and checking for new music..."
     echo ""
 
+
+    # The start of the actuall point of the script lol
+
+    # Checks the amount of songs before the download so that it can say how many songs were added or removed
     BEFORE_COUNT=$(ls -1 *.mp3 2>/dev/null | wc -l)
 
-    # Generate a yt-dlp compatible archive from id_filename_map.txt
+    # Generate a yt-dlp archive from id_filename_map.txt that safe to get corrupted if something goes wrong
     if [ -f "id_filename_map.txt" ]; then
         awk -F'|' '{print "youtube " $1}' id_filename_map.txt > id_filename_map_but_so_its_not_corrupted_during_download.tmp
     else
         touch id_filename_map_but_so_its_not_corrupted_during_download.tmp
     fi
 
-    # 1. Run the download (New songs)
+    # The actuall download command
+    # Feel free to add/remove the metadata related taggs so that its suited for you :D
     yt-dlp -x --audio-format mp3 --audio-quality 0 \
     --embed-thumbnail --embed-metadata \
     --sub-langs "en.*,ja.*,.*-orig,all" \
     --convert-subs lrc --postprocessor-args "ffmpeg:-id3v2_version 3" \
     --parse-metadata "track_number:%(meta_track)s" \
     --no-part --no-warnings -i --ignore-errors --no-cache-dir \
-    --download-archive id_filename_map_but_so_its_not_corrupted_during_download.tmp -o "%(title)s.%(ext)s" \
-    --exec 'echo "%(id)s|%(title)s.mp3" >> new_songs.tmp' \
-    "$PLAYLIST_URL"
+    --download-archive id_filename_map_but_so_its_not_corrupted_during_download.tmp -o "%(title)s.%(ext)s" # DO NOT REMOVE THIS\
+    --exec 'echo "%(id)s|%(title)s.mp3" >> new_songs.tmp' #OR THIS\
+    "$PLAYLIST_URL" #Oh, OR THIS AS WELL
 
     rm -f id_filename_map_but_so_its_not_corrupted_during_download.tmp
     REMOVED_COUNT=0
 
+
+    # This checks for any new songs so that you get asked if you want to change the title of your newly downloaded songs
+    # I found the YouTube song names anoying because alot of them had a bunch of random junk in the names
     if [ -f "new_songs.tmp" ]; then
         echo -e "\nMusic sync: Tagging new songs..."
+        # Heres the part where we make sure it asks you for each song because I forgot to do that in some earlier versions of the script
         while IFS='|' read -r id filename <&3; do
             if [ -f "$filename" ]; then
                 echo -e "\n-----------------------------------------------------------------"
@@ -125,15 +136,14 @@ if [ -d "$MUSIC_DIR" ]; then
 
 
 
-    # 2. Cleanup Audit & Active Deletion (Name + ID Purge)
+    # Deleting songs that aren't on the YouTube playlist anymore
     echo -e "\nMusic sync: Scanning for removed songs..."
 
     if yt-dlp --get-id --flat-playlist --no-warnings "$PLAYLIST_URL" > online_ids.txt; then
 
-        # Now delete local files whose ID is no longer online
+        # Make the deleted files go kapif when they arent in id_filename_map.txt
         if [ -f "id_filename_map.txt" ]; then
             cp id_filename_map.txt id_filename_map_read.tmp
-
             while IFS='|' read -r id filename; do
                 [ -z "$id" ] && continue
                 if ! grep -qFx -- "$id" online_ids.txt; then
@@ -142,8 +152,9 @@ if [ -d "$MUSIC_DIR" ]; then
                         echo " -> Deleting removed song: $filename"
                         rm "$filename"
                         grep -v "^$id|" id_filename_map.txt > id_map.tmp && mv id_map.tmp id_filename_map.txt
-                        echo " -> Purged ID $id from map."
+                        echo " -> Removed ID $id and filename id_filename_map.txt."
                         echo "$filename" >> Deleted_files.tmp
+                        # Making the script say how many songs were removed in this session cos I like that info
                         REMOVED_COUNT=$((REMOVED_COUNT + 1))
                     fi
                 fi
@@ -152,10 +163,12 @@ if [ -d "$MUSIC_DIR" ]; then
             rm -f id_filename_map_read.tmp
 
         else
+            # This is so that if the file is deleted somehow you dont loose all your songs, because that would absolutely suck
             echo "Music sync: id_filename_map.txt not found, skipping file deletion. It will be built from future downloads."
         fi
 
     else
+        # Just incase
         echo "Music sync: Could not reach YouTube to verify playlist."
     fi
 
@@ -169,8 +182,10 @@ if [ -d "$MUSIC_DIR" ]; then
         ls -1 *.mp3 | grep -v "^\." > "$PLAYLIST_FILE"
     fi
 
-    # 3. Logging Logic
-    # makes sure negaives aren't shown in the notifacation as that can happen if songs are deleted otherwise lol
+
+    # Time to make the log!!
+
+    # makes sure negaives aren't shown in the notifacation as that can happen if songs are deleted otherwise for some reason lol
     if [ $ADDED -lt 0 ]; then
         ADDED=0
     fi
@@ -178,12 +193,12 @@ if [ -d "$MUSIC_DIR" ]; then
         echo "Added: $ADDED songs | Deleted: $REMOVED_COUNT songs"
         echo "Check sync_log.txt in your music directory for more info"
 else
-    echo "Music sync: USB Drive not found at $MUSIC_DIR"
+    echo "Music sync: $MUSIC_DIR does not exist or could not be found"
 fi
 
 # If your reading this comment it is to say that this script was orginaly made by GrenguyAkaTheo on GitHub. I am putting this here so that less people are able to succsessfully sell this script. I know its petty, but them kind of people really piss me off
 
-# Log output
+# Adding to the sync log
 LOG_FILE="$MUSIC_DIR/sync_log.txt"
 {
   echo "Sync Session: $(date)"
@@ -196,6 +211,7 @@ LOG_FILE="$MUSIC_DIR/sync_log.txt"
   cat Deleted_files.tmp 2>/dev/null
   echo "-----------------------------------------------------------------"
 } >> "$LOG_FILE"
+
 
 rm Deleted_files.tmp 2>/dev/null
 rm new_songs.tmp 2>/dev/null
