@@ -82,9 +82,9 @@ if [ -d "$MUSIC_DIR" ]; then
 
     # Generate a yt-dlp compatible archive from id_filename_map.txt
     if [ -f "id_filename_map.txt" ]; then
-        awk -F'|' '{print "youtube " $1}' id_filename_map.txt > history.tmp
+        awk -F'|' '{print "youtube " $1}' id_filename_map.txt > id_filename_map_but_so_its_not_corrupted_during_download.tmp
     else
-        touch history.tmp
+        touch id_filename_map_but_so_its_not_corrupted_during_download.tmp
     fi
 
     # 1. Run the download (New songs)
@@ -94,11 +94,11 @@ if [ -d "$MUSIC_DIR" ]; then
     --convert-subs lrc --postprocessor-args "ffmpeg:-id3v2_version 3" \
     --parse-metadata "track_number:%(meta_track)s" \
     --no-part --no-warnings -i --ignore-errors --no-cache-dir \
-    --download-archive history.tmp -o "%(title)s.%(ext)s" \
+    --download-archive id_filename_map_but_so_its_not_corrupted_during_download.tmp -o "%(title)s.%(ext)s" \
     --exec 'echo "%(id)s|%(title)s.mp3" >> new_songs.tmp' \
     "$PLAYLIST_URL"
 
-    rm -f history.tmp
+    rm -f id_filename_map_but_so_its_not_corrupted_during_download.tmp
     REMOVED_COUNT=0
 
     if [ -f "new_songs.tmp" ]; then
