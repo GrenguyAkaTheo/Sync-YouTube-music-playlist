@@ -44,13 +44,13 @@ PLEASE DO NOT USE THIS SCRIPT TO DISTROBUTE ANY MEDIA YOU DOWNLOAD!!!
 
 If you are running this on your phone you do need terminal access. I recommend you use Fdroid-Termix for this (but any bash terminal *should* do). I do not know if this works on Apple, but it theoretically should as iOS is also Linux based, but you will need some other way to get a terminal as Termix is an Fdroid application (And is only available on Android)
 
-The same dependacies apply to the mobile version as the normal version. The script is EXACTLY the same, but I have commented out the storage check and lock file lines with '##' rather than '#' so you can easily find them lines and run this version of the script on a PC (Although you can run it on PC without incomenting these lines)
+The same dependacies apply if your using it on your phone. The script is EXACTLY the same, there is no version of the script specifically for mobile. The one script should run on pretty much all desktop linux distros, Andoid, and iOS (I am unable to test iOS, but theroretically it should work)
 
 If you are using Termix sudo won't work, however you don't need sudo. simply run the same commands to install the dependencies but without 'sudo'
 
-The set up is exactly the same as the normal version of the script. Please read through the part of the READ ME for the normal version of the script to set it up, as once again, it's exactly the same script but with a few lines commented out
+The set up is exactly the same as on PC. Please read through the part of the READ ME for PC to set it up, as once again, it's exactly the same script
 
-You will likely have an issue or two while installing these. I won't know exactly what issues you may have, so I won't list the fixes here (If you read what I said for the rest of the mobile, it should work regardless). They are very easy to find fixes for on Google if you just take a screenshot of Termix, and send it to Gemini (Shut up about AI, this is one of the moments where it's actually useful for once) and say with the image "I have had this error on Termix. How can I fix it" (or something similar, this is just a prompt I'm providing that should give you a decent answer). If you run AI's fix and you get a different error, simply go through the same prosses again with the same prompt
+You will likely have an issue or two while installing these. One of them will likely be a permission issue, but it will show up as a missing directory error, and has a one comand fix (I can't remember the command though). I won't know exactly what other issues you may have, so I won't list the fixes here (If you read what I said for the rest of the mobile, it should work regardless). They are very easy to find fixes for on Google if you just take a screenshot of Termix, and send it to Gemini (Shut up about AI, this is one of the moments where it's actually useful for once) and say with the image "I have had this error on Termix. How can I fix it" (or something similar, this is just a prompt I'm providing that should give you a decent answer). If you run AI's fix and you get a different error, simply go through the same prosses again with the same prompt
 
 
 - GrenguyAkaTheo, GitHub
