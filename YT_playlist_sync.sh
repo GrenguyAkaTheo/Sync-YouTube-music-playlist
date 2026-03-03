@@ -24,13 +24,14 @@ if [ ! -t 0 ]; then
 fi
 
 # Prevent multiple instances
-LOCKFILE="/tmp/music_sync.lock"
+LOCKFILE="${TMPDIR:-/data/local/tmp}/music_sync.lock"
 if [ -e "$LOCKFILE" ]; then
     echo "Sync already in progress. Exiting."
     exit 1
 fi
 touch "$LOCKFILE"
-trap "rm -f $LOCKFILE *.tmp online_ids.txt local_history_ids.txt; exit" INT TERM EXIT
+trap "rm -f '$LOCKFILE' *.tmp online_ids.txt local_history_ids.txt; exit" INT TERM EXIT
+
 
 # Force UTF-8 for Japanese/special characters
 export LC_ALL=C.UTF-8
@@ -45,10 +46,9 @@ sleep 1
 
 
 # Storage space check
-AVAILABLE_KB=$(df . --output=avail | tail -1)
+AVAILABLE_KB=$(df . | tail -1 | awk '{print $4}')
 AVAILABLE_MB=$((AVAILABLE_KB / 1024))
-echo "Storage Check: $AVAILABLE_MB MB remaining on USB."
-
+echo "Storage Check: $AVAILABLE_MB MB remaining."
 if [ "$AVAILABLE_MB" -lt 256 ]; then
     echo "Music sync: LOW DISK SPACE ($AVAILABLE_MB MB). Sync cancelled."
     exit 1
