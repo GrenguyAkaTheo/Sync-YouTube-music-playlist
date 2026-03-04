@@ -101,8 +101,8 @@ if [ -d "$MUSIC_DIR" ]; then
     --convert-subs lrc --postprocessor-args "ffmpeg:-id3v2_version 3" \
     --parse-metadata "track_number:%(meta_track)s" \
     --no-part --no-warnings -i --ignore-errors --no-cache-dir \
-    --download-archive id_filename_map_but_so_its_not_corrupted_during_download.tmp -o "%(title)s.%(ext)s" # DO NOT REMOVE THIS\
-    --exec 'echo "%(id)s|%(title)s.mp3" >> new_songs.tmp' #OR THIS\
+    --download-archive id_filename_map_but_so_its_not_corrupted_during_download.tmp -o "%(title)s.%(ext)s" \  # DO NOT REMOVE THIS
+    --exec 'echo "%(id)s|%(title)s.mp3" >> new_songs.tmp' \  #OR THIS
     "$PLAYLIST_URL" #Oh, OR THIS AS WELL
 
     rm -f id_filename_map_but_so_its_not_corrupted_during_download.tmp
