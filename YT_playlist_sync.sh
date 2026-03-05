@@ -223,3 +223,6 @@ read -p "Music sync complete. Press [Enter] to exit..."
 
 # Thanks for reading this. It was heavily vibe coded as this is the first bash script I've ever made, so I used gemini and claud to help me learn
 # I do use this scrip on my raspberry pi 3B+ wth pi OS, and my Bazzite PC. So uhh, it does work lol
+
+
+# Also shoutout to that one time my friend impailed the floor with a scrwdriver by accident, and everyone else who was there to see it happen
