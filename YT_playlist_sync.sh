@@ -142,7 +142,7 @@ if [ -d "$MUSIC_DIR" ]; then
 
     if yt-dlp --get-id --flat-playlist --no-warnings "$PLAYLIST_URL" > online_ids.txt; then
 
-        # Make the deleted files go kapif when they arent in id_filename_map.txt
+        # Make the deleted files go kapuf when they arent in id_filename_map.txt
         if [ -f "id_filename_map.txt" ]; then
             cp id_filename_map.txt id_filename_map_read.tmp
             while IFS='|' read -r id filename; do
@@ -186,7 +186,7 @@ if [ -d "$MUSIC_DIR" ]; then
 
     # Time to make the log!!
 
-    # makes sure negaives aren't shown in the notifacation as that can happen if songs are deleted otherwise for some reason lol
+    # makes sure negatives aren't shown in the notifacation as that can happen if songs are deleted otherwise for some reason lol
     if [ $ADDED -lt 0 ]; then
         ADDED=0
     fi
