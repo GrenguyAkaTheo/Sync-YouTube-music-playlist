@@ -7,7 +7,7 @@
 # For this script to work you must have yt-dlp, ffmpeg, and mid3v2 installed!!!
 # Please read the whole READ ME file before running this script, there is some important information in there
 
-# Set music directory, YT playlist link, and a plalist name for all your songs here
+# Set music directory, YT playlist link, and a playlist name for all your songs here
 MUSIC_DIR="<Path to your music folder>"
 PLAYLIST_URL="<Your YouTube playlist's link (make sure the playlist is set to public)>"
 PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
