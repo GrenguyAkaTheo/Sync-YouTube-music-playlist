@@ -225,4 +225,4 @@ read -p "Music sync complete. Press [Enter] to exit..."
 # I do use this scrip on my raspberry pi 3B+ wth pi OS, and my Bazzite PC. So uhh, it does work lol
 
 
-# Also shoutout to that one time my friend impailed the floor with a scrwdriver by accident, and everyone else who was there to see it happen
+# Also shoutout to all the IT lab admins at CBC college, there's no way I would have ended up making script if you guys didn't exist (even though you played no roll in actually making the script), also your all just great friends and co-workers in general!!
