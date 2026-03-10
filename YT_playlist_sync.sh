@@ -12,7 +12,7 @@ MUSIC_DIR="<Path to your music folder>"
 PLAYLIST_URL="<Your YouTube playlist's link (make sure the playlist is set to public)>"
 PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
 
-## If you tun this script and it closes its self imediatly, restarting your device should sort that. It doesn't happen much, but on my raspberry pi 3B+ I had that issue a couple of times and restating it worked both times
+## If you run this script and it closes its self imediatly, restarting your device should sort that. It doesn't happen much, but on my raspberry pi 3B+ I had that issue a couple of times and restating it worked both times
 ## You'r all set to use the script now :D
 
 
