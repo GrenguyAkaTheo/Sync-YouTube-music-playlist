@@ -95,9 +95,10 @@ if [ -d "$MUSIC_DIR" ]; then
 
     # The actuall download command
     # Feel free to add/remove the metadata related taggs so that its suited for you :D
-    # DO NOT REMOVE LINES 105, 106, or 107!!!!
+    # DO NOT REMOVE LINES 106, 107, or 108!!!!
     yt-dlp -x --audio-format mp3 --audio-quality 0 \
-    --embed-thumbnail --embed-metadata \
+    --embed-thumbnail --ppa "EmbedThumbnail+ffmpeg_o:-c:v mjpeg -vf crop='ih:ih'" \
+    --embed-metadata \
     --sub-langs "en.*,ja.*,.*-orig,all" \
     --convert-subs lrc --postprocessor-args "ffmpeg:-id3v2_version 3" \
     --parse-metadata "track_number:%(meta_track)s" \
