@@ -1,6 +1,15 @@
 #!/bin/bash
 
+# support for nix tools for auto-grabbing deps - @ripples1253/Ripley White <3
+# theo, if you need extra dependencies in the future, update this line with package
+# names from https://search.nixos.org/packages
+DEPS="yt-dlp ffmpeg python313Packages.mutagen"
 
+if [[ "$IN_NIX_SHELL" != "true" ]] && command -v nix-shell &> /dev/null; then
+    echo "found nix-shell, relaunching!"
+    exec nix-shell -p $DEPS --run "$(printf "%q " "$0" "$@")"
+    exit 0
+fi
 
 ## !!!!!!!READ HERE!!!!!!!!
 ## ---- DEPENDANCYS ----
