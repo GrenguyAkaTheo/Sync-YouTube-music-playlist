@@ -1,25 +1,31 @@
 #!/usr/bin/env bash
 
-# support for nix tools for auto-grabbing deps - @ripples1253/Ripley White <3
+# Please read the whole README file before running, there's important information in there
+# Set music directory, YT playlist link, and a playlist name for all your songs here
+MUSIC_DIR="<Path to your music folder>"
+PLAYLIST_URL="<Your YouTube playlist's link (make sure the playlist is set to public)>"
+PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
+
+# support for nix tools & dependency checking - @ripples1253/Ripley White <3
 # theo, if you need extra dependencies in the future, update this line with package
 # names from https://search.nixos.org/packages
 DEPS="yt-dlp ffmpeg python313Packages.mutagen"
+REQUIRED_TOOLS=("yt-dlp" "ffmpeg" "mid3v2") # if these commands don't exist, error and die
 
-if [[ "$IN_NIX_SHELL" != "true" ]] && command -v nix-shell &> /dev/null; then
+if [[ -z "${IN_NIX_SHELL-}" ]] && type -p nix-shell > /dev/null 2>&1; then
     echo "found nix-shell, relaunching!"
     exec nix-shell -p $DEPS --run "$(printf "%q " "$0" "$@")"
     exit 0
 fi
 
-## !!!!!!!READ HERE!!!!!!!!
-## ---- DEPENDANCYS ----
-# For this script to work you must have yt-dlp, ffmpeg, and mid3v2 installed!!!
-# Please read the whole READ ME file before running this script, there is some important information in there
+for tool in "${REQUIRED_TOOLS[@]}"; do
+    if ! type -p "$tool" > /dev/null 2>&1; then
+        echo "$tool wasn't found in your path. Please install it and run again. Or don't. I'm not your father."
+        exit 1
+    fi
+done
 
-# Set music directory, YT playlist link, and a playlist name for all your songs here
-MUSIC_DIR="<Path to your music folder>"
-PLAYLIST_URL="<Your YouTube playlist's link (make sure the playlist is set to public)>"
-PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
+echo "dependency check successful!"
 
 ## If you run this script and it closes its self imediatly, restarting your device should sort that. It doesn't happen much, but on my raspberry pi 3B+ I had that issue a couple of times and restating it worked both times
 ## You'r all set to use the script now :D
