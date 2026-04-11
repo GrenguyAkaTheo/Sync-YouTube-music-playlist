@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # support for nix tools for auto-grabbing deps - @ripples1253/Ripley White <3
 # theo, if you need extra dependencies in the future, update this line with package
