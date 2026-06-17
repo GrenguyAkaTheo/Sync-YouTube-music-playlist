@@ -158,8 +158,22 @@ if [ -d "$MUSIC_DIR" ]; then
 
     if yt-dlp --get-id --flat-playlist --no-warnings "$PLAYLIST_URL" > online_ids.txt; then
 
+        ONLINE_COUNT=$(wc -l < online_ids.txt)
+        LOCAL_COUNT=$(wc -l < id_filename_map.txt 2>/dev/null || echo 0)
+
+        # FAIL-SAFE: If online count drops by more than 25% compared to local, abort deletion!
+        if [ "$LOCAL_COUNT" -gt 0 ]; then
+            MIN_EXPECTED=$((LOCAL_COUNT * 3 / 4))
+            if [ "$ONLINE_COUNT" -lt "$MIN_EXPECTED" ]; then
+                echo "CRITICAL WARNING: YouTube only returned $ONLINE_COUNT IDs, but you have $LOCAL_COUNT local songs."
+                echo "This usually means YouTube paginated the list or yt-dlp needs an update."
+                echo "Aborting deletion step to protect your files."
+                SKIP_DELETION=true
+            fi
+        fi
+
         # Make the deleted files go kapuf when they arent in id_filename_map.txt
-        if [ -f "id_filename_map.txt" ]; then
+        if [ "${SKIP_DELETION:-false}" = false ] && [ -f "id_filename_map.txt" ]; then
             cp id_filename_map.txt id_filename_map_read.tmp
             while IFS='|' read -r id filename; do
                 [ -z "$id" ] && continue
@@ -169,9 +183,8 @@ if [ -d "$MUSIC_DIR" ]; then
                         echo " -> Deleting removed song: $filename"
                         rm "$filename"
                         grep -v "^$id|" id_filename_map.txt > id_map.tmp && mv id_map.tmp id_filename_map.txt
-                        echo " -> Removed ID $id and filename id_filename_map.txt."
+                        echo " -> Removed ID $id and filename from map."
                         echo "$filename" >> Deleted_files.tmp
-                        # Making the script say how many songs were removed in this session cos I like that info
                         REMOVED_COUNT=$((REMOVED_COUNT + 1))
                     fi
                 fi
@@ -179,13 +192,11 @@ if [ -d "$MUSIC_DIR" ]; then
 
             rm -f id_filename_map_read.tmp
 
-        else
-            # This is so that if the file is deleted somehow you dont loose all your songs, because that would absolutely suck
-            echo "Music sync: id_filename_map.txt not found, skipping file deletion. It will be built from future downloads."
+        elif [ "${SKIP_DELETION:-false}" = false ]; then
+            echo "Music sync: id_filename_map.txt not found, skipping file deletion."
         fi
 
     else
-        # Just incase
         echo "Music sync: Could not reach YouTube to verify playlist."
     fi
 
