@@ -111,7 +111,8 @@ if [ -d "$MUSIC_DIR" ]; then
     # The actuall download command
     # Feel free to add/remove the metadata related taggs so that its suited for you :D
     # DO NOT REMOVE LINES 106, 107, or 108!!!!
-    yt-dlp -x --audio-format mp3 --audio-quality 0 \
+    yt-dlp --cookies-from-browser firefox \
+    -x --audio-format mp3 --audio-quality 0 \
     --embed-thumbnail --ppa "EmbedThumbnail+ffmpeg_o:-c:v mjpeg -vf crop='ih:ih'" \
     --embed-metadata \
     --sub-langs "en.*,ja.*,.*-orig,all" \
@@ -121,7 +122,7 @@ if [ -d "$MUSIC_DIR" ]; then
     --download-archive id_filename_map_but_so_its_not_corrupted_during_download.tmp -o "%(title)s.%(ext)s" \
     --exec 'echo "%(id)s|%(title)s.mp3" >> new_songs.tmp' \
     "$PLAYLIST_URL"
-
+    
     rm -f id_filename_map_but_so_its_not_corrupted_during_download.tmp
     REMOVED_COUNT=0
 
