@@ -5,6 +5,7 @@
 MUSIC_DIR="<Path to your music folder>"
 PLAYLIST_URL="<Your YouTube playlist's link (make sure the playlist is set to public)>"
 PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
+# You'r all set to use the script now :D
 
 # support for nix tools & dependency checking - @ripples1253/Ripley White <3
 # theo, if you need extra dependencies in the future, update this line with package. Yeah, I know that, I also use NixOS on my laptop (This can stay for anyone else reading the code ig)
@@ -28,8 +29,6 @@ done
 echo "dependency check successful!"
 
 ## If you run this script and it closes its self imediatly, restarting your device should sort that. It doesn't happen much, but on my raspberry pi 3B+ I had that issue a couple of times and restating it worked both times
-## You'r all set to use the script now :D
-
 
 
 # --- Makes the script run in a terminal if you don't launch it via the terminal ---
