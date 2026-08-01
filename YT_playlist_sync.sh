@@ -7,7 +7,7 @@ PLAYLIST_URL="<Your YouTube playlist's link (make sure the playlist is set to pu
 PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
 
 # support for nix tools & dependency checking - @ripples1253/Ripley White <3
-# theo, if you need extra dependencies in the future, update this line with package
+# theo, if you need extra dependencies in the future, update this line with package. Yeah, I know that, I also use NixOS on my laptop (This can stay for anyone else reading the code ig)
 # names from https://search.nixos.org/packages
 DEPS="yt-dlp ffmpeg python313Packages.mutagen"
 REQUIRED_TOOLS=("yt-dlp" "ffmpeg" "mid3v2") # if these commands don't exist, error and die
@@ -111,7 +111,9 @@ if [ -d "$MUSIC_DIR" ]; then
     # The actuall download command
     # Feel free to add/remove the metadata related taggs so that its suited for you :D
     # DO NOT REMOVE LINES 106, 107, or 108!!!!
-    yt-dlp --cookies-from-browser firefox \
+    yt-dlp --cookies cookies.txt \
+    --extractor-args "youtube:player_client=tv_downgraded,default" \
+    -f "ba/b" \
     -x --audio-format mp3 --audio-quality 0 \
     --embed-thumbnail --ppa "EmbedThumbnail+ffmpeg_o:-c:v mjpeg -vf crop='ih:ih'" \
     --embed-metadata \
@@ -120,9 +122,10 @@ if [ -d "$MUSIC_DIR" ]; then
     --parse-metadata "track_number:%(meta_track)s" \
     --no-part --no-warnings -i --ignore-errors --no-cache-dir \
     --download-archive id_filename_map_but_so_its_not_corrupted_during_download.tmp -o "%(title)s.%(ext)s" \
-    --exec 'echo "%(id)s|%(title)s.mp3" >> new_songs.tmp' \
+    --print-to-file "%(id)s%(title)s.mp3" new_songs.tmp \
+    --progress \
     "$PLAYLIST_URL"
-    
+
     rm -f id_filename_map_but_so_its_not_corrupted_during_download.tmp
     REMOVED_COUNT=0
 
@@ -247,6 +250,7 @@ rm new_songs.tmp 2>/dev/null
 
 echo ""
 read -p "Music sync complete. Press [Enter] to exit..."
+
 
 
 # Thanks for reading this. It was heavily vibe coded as this is the first bash script I've ever made, so I used gemini and claud to help me learn
