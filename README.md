@@ -15,7 +15,7 @@ For this script to work you must have yt-dlp, ffmpeg, and mid3v2 installed or it
 
 You do also need browser cookies for this to work (because Google are rude, and want to make sure your a person before letting you have the audio stream). To do so, you can get them by installing a browser extention that extracts the cookies for the page your on, opening a private/incognito tab (so that your using a different cookie jar that wont renew when opening yt on a normal tab), going onto YouTube music, and then export the cookies via the browser extention you used. Once you've done that, rename the exported text file to "cookies.txt" and place it in the same folder as the YT_playlist_sync.sh file
 
-You MUST edit the .sh file (The actual script) and follow the short and simple instructions from line 5 to line 16, and 114, or it will crap the bed when you try to run it
+You MUST edit the .sh file (The actual script) and follow the short and simple instructions from line 4 to line 8 or it will crap the bed when you try to run it
 
 Line 114 is where yt-dlp imports your browser cookies to make youtube think that its a real person and supplies the script with all pages of the playlist. If you don't use firefox as your browser, just replace `firefox` with your browsers name (eg: `chrome`). You only need this line if your playlist contains over 100 songs as there are 100 songs in each page of a youtube playlist.
 
