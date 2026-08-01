@@ -108,8 +108,7 @@ if [ -d "$MUSIC_DIR" ]; then
     fi
 
     # The actuall download command
-    # Feel free to add/remove the metadata related taggs so that its suited for you :D
-    # DO NOT REMOVE LINES 106, 107, or 108!!!!
+    # Feel free to change the metadata related taggs so that its suited for you (If it breaks shit you can always just look at the original command on GitHub again) :D
     yt-dlp --cookies cookies.txt \
     --extractor-args "youtube:player_client=tv_downgraded,default" \
     -f "ba/b" \
@@ -227,7 +226,7 @@ else
     echo "Music sync: $MUSIC_DIR does not exist or could not be found"
 fi
 
-# If your reading this comment it is to say that this script was orginaly made by GrenguyAkaTheo on GitHub. I am putting this here so that less people are able to succsessfully sell this script. I know its petty, but them kind of people really piss me off
+# If your reading this comment it is to say that this script was orginaly made by GrenguyAkaTheo with a little help from ripples1253 on GitHub. I am putting this here so that less people are able to succsessfully sell this script and get away with it. I know its petty, but them kind of people really piss me off
 
 # Adding to the sync log
 LOG_FILE="$MUSIC_DIR/sync_log.txt"
