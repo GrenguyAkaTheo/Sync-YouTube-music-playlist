@@ -12,6 +12,7 @@ PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
 # theo: Yeah, I know that, I also use NixOS on my laptop (This can stay for anyone else reading the code ig)
 # ripley: waah waah waah that's the sound of someone who doesn't own an air fryer
 # Theo: stfu, you don't own like 12 sets of D&D dice. I think I win
+# ripley: yeah well my huawei 2018 y6 runs a custom alpine linux distro deployed via leaked firehose files, AND my computer doesn't look like a bomb unlike your "pi"
 # names from https://search.nixos.org/packages
 DEPS="yt-dlp ffmpeg python313Packages.mutagen"
 REQUIRED_TOOLS=("yt-dlp" "ffmpeg" "mid3v2") # if these commands don't exist, error and die
