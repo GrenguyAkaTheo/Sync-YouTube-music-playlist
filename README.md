@@ -20,6 +20,8 @@ Make sure the file is exicutable on your linux distro with `sudo chmod -x <path 
 To run the scrip you can type `bash <path to file>/YT_playlist_dl.sh` in your terminal, or just run it via your file explorer.
 
 # Important information
+PLEASE DO NOT USE THIS SCRIPT TO DISTROBUTE ANY MEDIA YOU DOWNLOAD!!!
+
 DO NOT CHANGE THE ACTUAL FILE NAMES OF THE SONGS! This will cause the song to be deleted when you next run the script. This is because the script checks the file name against youtubes songs names to see if the song should be removed or not. If the actual file name is diferent to the one on youtube, the script will think you took the song off your youtube playlist.
 
 On that note, MAKE SURE THAT ANY SONGS YOU ALREADY HAVE DOWNLOADED THAT WERENT DOWNLOADED FROM THIS SCRIPT ARE IN A DIFFERENT FILE OR THEY WILL GET DELETED FOR THE SAME REASON!!
@@ -29,8 +31,6 @@ DO NOT REMOVE "id_filename_map.txt" ONCE YOU RUN THE SCRIPT. This is effectively
 All the mp3 files in your music folder will be added to the playlist of all songs. If a song doesn't get added (which is highly unlikely) simply add the file name to a new line in your m3u file.
 
 # Useful info and help
-PLEASE DO NOT USE THIS SCRIPT TO DISTROBUTE ANY MEDIA YOU DOWNLOAD!!!
-
 If a song fails to download due to something along the lines of "video unavalale" but you can get the song in some other way, simply rename the song file to the exact title of the song on youtube music. To stop the script from erroring enter add `<The songs youtube ID (will look something like this "otS3u8227kY")>|<The songs filename with the file type>` as a new line anywhere in "id_filename_map.txt". This ID can be found in the songs link (like this, at the quoted location after "watch?v=" https://music.youtube.com/watch?v=`vbMh38KGZMM`&si=_H1xcMw3Cezj9QWS).
 
 This script tags songs with ID3v2.3 rather than ID3v2.4. This is for better compatibility with older media players like VLC and audatious. You can change this in the yt-dlp download command within the script by changing line 125 to say  `"ffmpeg:-id3v2_version 4"` rather than `"ffmpeg:-id3v2_version 3"`.
