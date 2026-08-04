@@ -1,11 +1,6 @@
 # YouTube-music-playlist-downloader
 This is a relitivly simple bash scrip that uses yt-dlp to download a youtube music playlist and automatically add the thumbnail, lyrics, album, and artists to the metadata of all the songs on the playlist. It will also automaticaly delete songs from your music directory if you remove them from your youtube music playlist
 
-# ANY KNOWN ISSUES WILL BE LISTED UNDER THIS LINE;
-Yeah so uhh, the lyrics just like, don't download. Not sure exactly *why*, but I have a feeling its to do with how YouTube is providing the lyrics. I really can't be arsed with figuring that out because that'll be to do with yt-dlp or YouTube them selves (neither of which im able to change the code of :D). So yeah, i guess we all just need to wait if we want a fix for that
-
-If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out. I do know that Visual Studio Code has a Shell extention called "Code runner". This should allow the script to run, but you will need to find a way to install the dependancys and get the /bin/bash path to exist
-
 # Setup instructions
 MAKE SURE THE PLAYLIST YOUR DOWNLOADING IS SET TO PUBLIC ON YOUTUBE!!
 
@@ -31,6 +26,8 @@ DO NOT REMOVE "id_filename_map.txt" ONCE YOU RUN THE SCRIPT. This is effectively
 All the mp3 files in your music folder will be added to the playlist of all songs. If a song doesn't get added (which is highly unlikely) simply add the file name to a new line in your m3u file.
 
 # Useful info and help
+If your on Windows, this may not work as you need bash suppourt. If you get bash suppourt on Windows then feel free to try it out. I do know that Visual Studio Code has a Shell extention called "Code runner". This should allow the script to run, but you will need to find a way to install the dependancys and get the /bin/bash path to exist
+
 If a song fails to download due to something along the lines of "video unavalale" but you can get the song in some other way, simply rename the song file to the exact title of the song on youtube music. To stop the script from erroring enter add `<The songs youtube ID (will look something like this "otS3u8227kY")>|<The songs filename with the file type>` as a new line anywhere in "id_filename_map.txt". This ID can be found in the songs link (like this, at the quoted location after "watch?v=" https://music.youtube.com/watch?v=`vbMh38KGZMM`&si=_H1xcMw3Cezj9QWS).
 
 This script tags songs with ID3v2.3 rather than ID3v2.4. This is for better compatibility with older media players like VLC and audatious. You can change this in the yt-dlp download command within the script by changing line 125 to say  `"ffmpeg:-id3v2_version 4"` rather than `"ffmpeg:-id3v2_version 3"`.
