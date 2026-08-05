@@ -125,7 +125,7 @@ if [ -d "$MUSIC_DIR" ]; then
     --parse-metadata "track_number:%(meta_track)s" \
     --no-part --no-warnings -i --ignore-errors --no-cache-dir \
     --download-archive id_filename_map_but_so_its_not_corrupted_during_download.tmp -o "%(title)s.%(ext)s" \
-    --print-to-file "%(id)s%(title)s.mp3" new_songs.tmp \
+    --print-to-file "%(id)s|%(title)s.mp3" new_songs.tmp \
     --progress \
     "$PLAYLIST_URL"
 
