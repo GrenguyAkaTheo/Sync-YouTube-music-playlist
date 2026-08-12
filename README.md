@@ -1,6 +1,9 @@
 # YouTube-music-playlist-downloader
 This is a relitivly simple bash scrip that uses yt-dlp to download a youtube music playlist and automatically add the thumbnail, lyrics, album, and artists to the metadata of all the songs on the playlist. It will also automaticaly delete songs from your music directory if you remove them from your youtube music playlist
 
+## Disclaimer
+This script is for personal and educational use only. This is to be used for personal archives, or for educational demonstrations. Users are solely responsible for ensuring their compliance with local copyright laws and YouTube's Terms of Service.
+
 # Setup instructions
 MAKE SURE THE PLAYLIST YOUR DOWNLOADING IS SET TO PUBLIC ON YOUTUBE!!
 
