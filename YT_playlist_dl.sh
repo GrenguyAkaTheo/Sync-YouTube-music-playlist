@@ -7,6 +7,10 @@ PLAYLIST_URL="<Your YouTube playlist's link (make sure the playlist is set to pu
 PLAYLIST_FILE="<What you want your playlist to be called on your device>.m3u"
 # You'r all set to use the script now :D
 
+#makes the script run in the folder it's saved in rather than your terminals active directory
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+cd "$SCRIPT_DIR"
+
 # support for nix tools & dependency checking - @ripples1253/Ripley White <3
 # ripley: theo, if you need extra dependencies in the future, update this line with package.
 # theo: Yeah, I know that, I also use NixOS on my laptop (This can stay for anyone else reading the code ig)
@@ -234,7 +238,7 @@ fi
 # If your reading this comment it is to say that this script was orginaly made by GrenguyAkaTheo with a little help from ripples1253 on GitHub. I am putting this here so that less people are able to succsessfully sell this script and get away with it. I know its petty, but them kind of people really piss me off
 
 # Adding to the sync log
-LOG_FILE="$MUSIC_DIR/sync_log.txt"
+LOG_FILE="$SCRIPT_DIR/sync_log.txt"
 {
   echo "Sync Session: $(date)"
   echo "Added: $ADDED | Deleted: $REMOVED_COUNT"
